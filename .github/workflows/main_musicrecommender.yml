@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'MusicRecommender'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_9AF4E5AE5F9C44DF99122DF2EFC39ED9 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E4A60C2D73954674BB3B3B70CB392DA3 }}
