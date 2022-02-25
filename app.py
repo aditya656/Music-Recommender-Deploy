@@ -10,7 +10,7 @@ from sklearn.cluster import KMeans
 from spotipy.oauth2 import SpotifyClientCredentials
 from collections import defaultdict
 from scipy.spatial.distance import cdist
-import difflib
+
 
 
 data = pd.read_csv("data.csv")
