@@ -135,9 +135,9 @@ def predict():
     # return render_template('index.html', prediction_text='Employee Salary should be $ {}'.format(output))
     song_title = request.form['songTitle']
     year = request.form['year']
-    print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@',song_title,year)
+    # print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@',song_title,year)
     output = recommend_songs([{'name': song_title, 'year': int(year)}],data)
-    print('Output: :::::', output)
+    # print('Output: :::::', output)
     master = '''<div class="center"><h2>Recommendations</h2></div>'''
     html_str_1 = '''<div class="container p-0 mt-2 bg-dark text-white"><p class="centerY">'''
     html_str_2 = '''</p><p class="centerZ">'''
@@ -155,10 +155,15 @@ def predict_api():
     '''
     For direct API calls trought request
     '''
-    data = request.get_json(force=True)
-    prediction = model.predict([np.array(list(data.values()))])
+    # data = request.get_json(force=True)
+    # prediction = model.predict([np.array(list(data.values()))])
 
-    output = prediction[0]
+    # output = prediction[0]
+    # return jsonify(output)
+    song_title = request.form['songTitle']
+    year = request.form['year']
+    output = recommend_songs([{'name': song_title, 'year': int(year)}],data)  
+    # print(output)
     return jsonify(output)
 
 if __name__ == "__main__":
