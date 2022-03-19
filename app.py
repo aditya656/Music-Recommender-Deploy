@@ -161,14 +161,16 @@ def predict_api():
     # output = prediction[0]
     # return jsonify(output)
     # song_title = request.POST.get['songTitle']
-    data = request.POST.get('data')
-    song_title = data['songTitle']
-    year = data['year']
+    # data = request.args['data']
+    song_title = request.form['songTitle']
+    year = int(request.form['year'])
+    # return render_template('test.html',prediction_text=song_title+str(year))
     # print("-----data----- ",data)
 
     # first try with one song then implement may songs
-
-    output = recommend_songs([{'name': song_title, 'year': int(year)}],data)  
+    
+    output = recommend_songs([{'name': song_title, 'year': year}],data)  
+    # render_template('test.html',prediction_text=output)
     # print(output)
     return jsonify(output)
 
