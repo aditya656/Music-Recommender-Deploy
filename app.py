@@ -3,6 +3,7 @@ import pickle
 import numpy as np
 import pandas as pd
 import spotipy
+import json
 
 from sklearn.cluster import KMeans
 # from sklearn.pipeline import Pipeline
@@ -56,17 +57,16 @@ number_cols = ['valence', 'year', 'acousticness', 'danceability', 'duration_ms',
 
 
 def get_song_data(song, spotify_data):
-    
     try:
         # first try to find the song data in the dataset 
         # if not found in the dataset this code will throw and error 
         # and we will get the data from the spotify API
         song_data = spotify_data[(spotify_data['name'] == song['name']) 
-                                & (spotify_data['year'] == song['year'])].iloc[0]
+                                & (spotify_data['year'] == int(song['year']))].iloc[0]
         return song_data
     
     except IndexError:
-        return find_song(song['name'], song['year'])
+        return find_song(song['name'], int(song['year']))
         
 
 def get_mean_vector(song_list, spotify_data):
@@ -125,19 +125,12 @@ def predict():
     '''
     For rendering results on HTML GUI
     '''
-    # int_features = [int(x) for x in request.form.values()]
-    # final_features = [np.array(int_features)]
-    # prediction = model.predict(final_features)
-
-    # output = round(prediction[0], 2)
-
-
-    # return render_template('index.html', prediction_text='Employee Salary should be $ {}'.format(output))
+    
     song_title = request.form['songTitle']
     year = request.form['year']
-    # print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@',song_title,year)
+
     output = recommend_songs([{'name': song_title, 'year': int(year)}],data)
-    # print('Output: :::::', output)
+
     master = '''<div class="center"><h2>Recommendations</h2></div>'''
     html_str_1 = '''<div class="container p-0 mt-2 bg-dark text-white"><p class="centerY">'''
     html_str_2 = '''</p><p class="centerZ">'''
@@ -155,23 +148,18 @@ def predict_api():
     '''
     For direct API calls trought request
     '''
-    # data = request.get_json(force=True)
-    # prediction = model.predict([np.array(list(data.values()))])
-
-    # output = prediction[0]
-    # return jsonify(output)
-    # song_title = request.POST.get['songTitle']
-    # data = request.args['data']
-    song_title = request.form['songTitle']
-    year = int(request.form['year'])
-    # return render_template('test.html',prediction_text=song_title+str(year))
-    # print("-----data----- ",data)
-
-    # first try with one song then implement may songs
     
-    output = recommend_songs([{'name': song_title, 'year': year}],data)  
-    # render_template('test.html',prediction_text=output)
-    # print(output)
+        
+    # song_title = request.form['songTitle']
+    # year = int(request.form['year'])
+    
+    songs_list = json.loads(request.form['songList'])
+    # return render_template('test.html',prediction_text=songs_list)
+
+    # output = recommend_songs([{'name': song_title, 'year': year}],data)
+    
+    output = recommend_songs(songs_list, data)
+    
     return jsonify(output)
 
 if __name__ == "__main__":
